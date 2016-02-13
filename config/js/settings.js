@@ -8,5 +8,7 @@ $(function () {
         setInterval(function () {
             $("body").css("background-color", "#ffffff");
         }, 1000);
+        // TODO: change this to use dynamic url
+        window.location = "http://kabirgoel.com/minty/";
     });
 });
