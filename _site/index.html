@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+		<meta name="theme-color" content="#2fe7ad"/>
+
+		<script type="text/javascript">
+    	WebFontConfig = {
+        	google: { families: [ 'Source+Code+Pro:300:latin', 'Slabo+27px::latin'] }
+    	};
+
+    	(function() {
+        	var wf = document.createElement('script');
+        	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        	wf.type = 'text/javascript';
+        	wf.async = 'true';
+        	var s = document.getElementsByTagName('script')[0];
+        	s.parentNode.insertBefore(wf, s);
+    	})();
+		</script>
+
+		<title>Minty</title>
+		<meta name="description" content="A refreshingly simple way to work.
+"/>
+		
+		<script src="/minty/js/jquery.min.js"></script>
+		<script src="/minty/js/timer.js"></script>
+		<script src="/minty/js/config.js"></script>
+		<script src="/minty/js/helpers.js"></script>
+		<script src="/minty/js/dom.js"></script>
+
+		<link rel="stylesheet" href="/minty/css/normalize.css"/>
+		<link rel="stylesheet" href="/minty/css/skeleton.css"/>
+		<link rel="stylesheet" href="/minty/font/icons/css/fontello.css"/>
+    	<link rel="stylesheet" href="/minty/css/index.css"/>
+	</head>
+	<body class="container">
+		<div class="main">
+			<div class="status">
+				<div id="clock"></div>
+				<div id="type"></div>
+			</div>
+
+			<nav class="buttons">
+				<button id="start-timer"><i class="icon-play"></i></button>
+				<button id="pause-timer"><i class="icon-pause"></i></button>
+				<button id="resume-timer"><i class="icon-play"></i></button>
+				<button id="reset-timer"><i class="icon-ccw"></i></button>
+			</nav>
+		</div>
+
+		<section class="info">
+			<p id="help"><a onclick="alert('Minty is a pomodoro timer with a focus on speed, simplicity and design. What\'s a pomodoro timer, you ask? Well, a pomodoro timer is a timer that breaks down work into intervals, traditionally 25 minutes in length, separated by short breaks. These intervals are called pomodoros, the plural in English of the Italian word pomodoro, which means tomato. The method is based on the idea that frequent breaks can improve mental agility.')">about</a> / <a onclick="alert('Minty is a pomodoro timer. If you don\'t know what a pomodoro timer is, click on \'about.\' Press the play button to start a pomodoro. A black background indicates that it\'s time to work. A green background means it\'s time to take a break. During a pomodoro, you can press the pause button to pause the pomodoro. Subsequently, you may wish to press the reset button to reset the timer if you\'re done with your work.')">help</a></p>
+			<p id="footer">(c) 2016 Kabir Goel. Hosted on <a href="//github.com/kbrgl/minty">GitHub</a></p>
+		</section>
+	</body>
+</html>
