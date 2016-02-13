@@ -1,0 +1,70 @@
+---
+---
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+		<meta name="theme-color" content="#2fe7ad"/>
+
+		<script type="text/javascript">
+    	WebFontConfig = {
+        	google: { families: [ 'Source+Code+Pro:300:latin', 'Slabo+27px::latin'] }
+    	};
+
+    	(function() {
+        	var wf = document.createElement('script');
+        	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        	wf.type = 'text/javascript';
+        	wf.async = 'true';
+        	var s = document.getElementsByTagName('script')[0];
+        	s.parentNode.insertBefore(wf, s);
+    	})();
+		</script>
+
+		<title>{{ site.title }}</title>
+		<meta name="description" content="{{ site.description }}"/>
+		
+		<script src="{{ '/js/jquery.min.js' | prepend: site.baseurl }}"></script>
+		<script src="{{ '/config/js/settings.js' | prepend: site.baseurl }}"></script>
+
+		<link rel="stylesheet" href="{{ '/css/normalize.css' | prepend: site.baseurl }}"/>
+		<link rel="stylesheet" href="{{ '/css/skeleton.css' | prepend: site.baseurl }}"/>
+    	<link rel="stylesheet" href="{{ '/css/index.css' | prepend: site.baseurl }}"/>
+    	<style>
+    		body {
+    			font-size: 2rem;
+    		}
+    		.container {
+    			margin-top: 10rem;
+    			margin-bottom: 5rem;
+    		}
+    		#footer {
+    			margin-top: 2rem;
+    		}
+    		#options {
+    			margin-top: 2rem;
+    		}
+    	</style>
+	</head>
+	<body class="container">
+		<h1>Configure Minty</h1>
+
+		<div id="options">
+			<label for="workTime">Number of minutes for work</label>
+			<input type="number" name="workTime" value="25"/>
+			<label for="breakTime">Number of minutes for break</label>
+			<input type="number" name="breakTime" value="5"/>
+			<label for="longerBreakTime">Number of minutes for extended break time (given every few cycles)</label>
+			<input type="number" name="longerBreakTime" value="20"/>
+			<label for="longerBreakRequiredCycles">Number of cycles after which break time is extended</label>
+			<input type="number" name="longerBreakRequiredCycles" value="4"/>
+			<br/>
+			<button id="submit">SUBMIT</button>
+		</div>
+
+		<p id="footer">(c) 2016 Kabir Goel. Hosted on <a href="//github.com/kbrgl/minty">GitHub</a>.</p>
+	</body>
+</html>

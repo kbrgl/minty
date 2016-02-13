@@ -24,7 +24,7 @@ var timer = new Timer(workTime, "work", function (seconds, name) {
         changeColors(breakBgColor, breakFgColor);
         cycles++;
         timer.name = "break";
-        if (cycles % 4 === 0) {
+        if (cycles % longerBreakRequiredCycles === 0) {
             timer.setTotal(longerBreakTime);
         } else {
             timer.setTotal(breakTime);

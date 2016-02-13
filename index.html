@@ -10,7 +10,7 @@
 
 		<script type="text/javascript">
     	WebFontConfig = {
-        	google: { families: [ 'Source+Code+Pro:300:latin', 'Slabo+27px::latin'] }
+        	google: { families: [ 'Source+Code+Pro:300:latin' ] }
     	};
 
     	(function() {
@@ -35,7 +35,7 @@
 
 		<link rel="stylesheet" href="{{ '/css/normalize.css' | prepend: site.baseurl }}"/>
 		<link rel="stylesheet" href="{{ '/css/skeleton.css' | prepend: site.baseurl }}"/>
-		<link rel="stylesheet" href="{{ '/font/icons/css/fontello.css' | prepend: site.baseurl }}"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     	<link rel="stylesheet" href="{{ '/css/index.css' | prepend: site.baseurl }}"/>
 	</head>
 	<body class="container">
@@ -46,10 +46,11 @@
 			</div>
 
 			<nav class="buttons">
-				<button id="start-timer"><i class="icon-play"></i></button>
-				<button id="pause-timer"><i class="icon-pause"></i></button>
-				<button id="resume-timer"><i class="icon-play"></i></button>
-				<button id="reset-timer"><i class="icon-ccw"></i></button>
+				<button id="start-timer"><i class="fa fa-play"></i></button>
+				<button id="pause-timer"><i class="fa fa-pause"></i></button>
+				<button id="resume-timer"><i class="fa fa-play"></i></button>
+				<button id="reset-timer"><i class="fa fa-undo"></i></button>
+				<a class="config button" href="{{ '/config/' | prepend: site.baseurl }}"><i class="fa fa-cog"></i></a>
 			</nav>
 		</div>
 

@@ -23,6 +23,7 @@ button:hover {
 
 .container {
 	margin-top: 15%;
+	margin-bottom: 2rem;
 }
 
 .main {
@@ -33,7 +34,19 @@ a:hover {
 	opacity: 0.7;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+.config {
+	border-color: #000000;
+	color: #000000;
+	transition: opacity 0.2s;
+}
+
+.config:hover {
+	opacity: 0.7;
+	transition: opacity 0.2s;
+	color: #000000;
+}
+
+.fa {
 	font-size: 150%;
 }
 
