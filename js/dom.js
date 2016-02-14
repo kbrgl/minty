@@ -1,28 +1,27 @@
 $(function () {
     "use strict";
-    changeColors(breakBgColor, breakFgColor);
+    changeColors(defaultBgColor, defaultFgColor);
 
-    $("#pause-timer, #resume-timer, #reset-timer").addClass("hidden");
+    $("#pause-timer, #resume-timer, #reset-timer").hide();
 
     $("#clock").html(formatAsMinutes(workTime));
 
     $("#start-timer").click(function () {
         changeColors(workBgColor, workFgColor);
         timer.start();
-        $("#start-timer").addClass("hidden");
-        $("#pause-timer, #clock, #type").removeClass("hidden");
+        $("#start-timer").hide();
+        $("#pause-timer, #clock").show();
+        $("#type").fadeIn(500, 'linear');
     });
 
     $("#pause-timer").click(function () {
         timer.pause();
-        $("#pause-timer").addClass("hidden");
-        $("#resume-timer, #reset-timer").removeClass("hidden");
+        $("#pause-timer, #resume-timer, #reset-timer").toggle();
     });
 
     $("#resume-timer").click(function () {
         timer.resume();
-        $("#resume-timer, #reset-timer").addClass("hidden");
-        $("#pause-timer").removeClass("hidden");
+        $("#pause-timer, #resume-timer, #reset-timer").toggle();
     });
 
     $("#reset-timer").click(function () {
@@ -30,8 +29,11 @@ $(function () {
         cycles = 0;
         $("#type").html("");
         $("#clock").html(formatAsMinutes(workTime));        
-        $("#reset-timer, #resume-timer, #type").addClass("hidden");
-        $("#start-timer").removeClass("hidden");
-        changeColors(breakBgColor, breakFgColor);
+        $("#start-timer, #reset-timer, #resume-timer, #type").toggle();
+        changeColors(defaultBgColor, defaultFgColor);
+    });
+
+    $(window).on("beforeunload", function () {
+        return "Your pomodoros will be lost.";
     });
 });

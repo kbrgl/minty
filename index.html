@@ -35,7 +35,7 @@
 
 		<link rel="stylesheet" href="{{ '/css/normalize.css' | prepend: site.baseurl }}"/>
 		<link rel="stylesheet" href="{{ '/css/skeleton.css' | prepend: site.baseurl }}"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{ '/font/font-awesome/css/font-awesome.min.css' | prepend: site.baseurl }}">
     	<link rel="stylesheet" href="{{ '/css/index.css' | prepend: site.baseurl }}"/>
 	</head>
 	<body class="container">
@@ -50,7 +50,11 @@
 				<button id="pause-timer"><i class="fa fa-pause"></i></button>
 				<button id="resume-timer"><i class="fa fa-play"></i></button>
 				<button id="reset-timer"><i class="fa fa-undo"></i></button>
-				<a class="config button" href="{{ '/config/' | prepend: site.baseurl }}"><i class="fa fa-cog"></i></a>
+				<form class="config" action="{{ '/config/' | prepend: site.baseurl }}">
+					<button type="submit" id="config">
+						<i class='fa fa-cog'></i>
+					</button>
+				</form>
 			</nav>
 		</div>
 
