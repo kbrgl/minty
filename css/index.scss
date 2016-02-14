@@ -24,7 +24,7 @@ body {
 	display: inline-block;
 }
 
-#config {
+#cog {
 	border-color: #000000 !important;
 	color: #000000;
 }
@@ -53,6 +53,18 @@ body {
 	font-size: 4rem;
 }
 
+#options {
+	margin-bottom: 4rem;
+	font-size: 2rem;
+	font-family: $clock-font;
+	font-weight: 400;
+}
+
+input {
+	color: #555555;
+	font-family: monospace;
+}
+
 .hidden {
 	display: none;
 }
@@ -67,4 +79,8 @@ body {
 
 #footer {
 	opacity: 0.5;
+}
+
+#submit {
+	font-family: monospace;
 }

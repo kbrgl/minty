@@ -1,5 +1,10 @@
 // produces timer objects. all time is in seconds.
-function Timer(time, name, callback, endCallback) {
+function Timer(time, name, callback, endCallback, grabTime) {
+    if (grabTime === undefined) {
+        grabTime = function () {
+            return time;
+        }
+    }
     "use strict";
     // total time
     var tTime = time;
@@ -10,6 +15,8 @@ function Timer(time, name, callback, endCallback) {
     // timer name
     this.name = name;
     
+    this.isreset = true;
+
     /* all three vars are used for pause functionality */
     // intervalId isn't local to update() because otherwise I couldn't clearInterval(intervalId) from this.pause() (essentially, the pause method wouldn't work)
     var intervalId;
@@ -20,6 +27,7 @@ function Timer(time, name, callback, endCallback) {
 
     // update timer
     var update = function () {
+        this.isreset = false;
         // grab date at start because this function calculates time by subtracting the start date from subsequent dates
         var startDate = new Date();
 
@@ -33,7 +41,6 @@ function Timer(time, name, callback, endCallback) {
             if (rTime < 1) {
                 callback();
                 tTimeP += timeP;
-                console.log("cache timeP " + tTimeP);
                 clearInterval(intervalId);
                 endCallback();
             } else {
@@ -64,6 +71,7 @@ function Timer(time, name, callback, endCallback) {
         // reset total time passed
         tTimeP = 0;
         rTime = tTime;
+        this.isreset = true;
     };
 
     // get total time
@@ -85,4 +93,9 @@ function Timer(time, name, callback, endCallback) {
     this.setTimeRemaining = function (n) {
         rTime = n;
     };
+
+    // expose user provided functions
+    this.grabTime = grabTime;
+    this.callback = callback;
+    this.endCallback = endCallback;
 }

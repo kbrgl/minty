@@ -1,6 +1,7 @@
 $(function () {
     "use strict";
     changeColors(defaultBgColor, defaultFgColor);
+    $("#options").hide();
 
     $("#pause-timer, #resume-timer, #reset-timer").hide();
 
@@ -33,7 +34,7 @@ $(function () {
         changeColors(defaultBgColor, defaultFgColor);
     });
 
-    $(window).on("beforeunload", function () {
-        return "Your pomodoros will be lost.";
+    $("#cog").click(function () {
+        $("#options").slideToggle();
     });
 });

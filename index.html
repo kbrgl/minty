@@ -33,6 +33,8 @@
 		<script src="{{ '/js/helpers.js' | prepend: site.baseurl }}"></script>
 		<script src="{{ '/js/dom.js' | prepend: site.baseurl }}"></script>
 
+		<script src="{{ '/js/settings.js' | prepend: site.baseurl }}"></script>
+
 		<link rel="stylesheet" href="{{ '/css/normalize.css' | prepend: site.baseurl }}"/>
 		<link rel="stylesheet" href="{{ '/css/skeleton.css' | prepend: site.baseurl }}"/>
 		<link rel="stylesheet" href="{{ '/font/font-awesome/css/font-awesome.min.css' | prepend: site.baseurl }}">
@@ -46,17 +48,37 @@
 			</div>
 
 			<nav class="buttons">
-				<button id="start-timer"><i class="fa fa-play"></i></button>
-				<button id="pause-timer"><i class="fa fa-pause"></i></button>
-				<button id="resume-timer"><i class="fa fa-play"></i></button>
-				<button id="reset-timer"><i class="fa fa-undo"></i></button>
-				<form class="config" action="{{ '/config/' | prepend: site.baseurl }}">
-					<button type="submit" id="config">
-						<i class='fa fa-cog'></i>
-					</button>
-				</form>
+				<button id="start-timer">
+					<i class="fa fa-play"></i>
+				</button>
+				<button id="pause-timer">
+					<i class="fa fa-pause"></i>
+				</button>
+				<button id="resume-timer">
+					<i class="fa fa-play"></i>
+				</button>
+				<button id="reset-timer">
+					<i class="fa fa-undo"></i>
+				</button>
+				<button id="cog">
+					<i class='fa fa-cog'></i>
+				</button>
 			</nav>
 		</div>
+
+		<section id="options">
+			<h1>Configure Minty</h1>
+			<label for="workTime">Number of minutes for work</label>
+			<input type="number" name="workTime" value="25"/>
+			<label for="breakTime">Number of minutes for break</label>
+			<input type="number" name="breakTime" value="5"/>
+			<label for="longerBreakTime">Number of minutes for extended break time (given every few cycles)</label>
+			<input type="number" name="longerBreakTime" value="20"/>
+			<label for="longerBreakRequiredCycles">Number of cycles after which break time is extended</label>
+			<input type="number" name="longerBreakRequiredCycles" value="4"/>
+			<br/>
+			<button id="submit">SUBMIT</button>
+		</section>
 
 		<section class="info">
 			<p>{{ site.title }}: a simple <a href="//en.wikipedia.org/wiki/Pomodoro_Technique">pomodoro timer</a></p>

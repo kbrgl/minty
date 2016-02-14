@@ -37,4 +37,12 @@ var timer = new Timer(workTime, "work", function (seconds, name) {
         timer.reset();
     }
     timer.resume();
+}, function () {
+    if (timer.name === "work") {
+        timer.setTotal(workTime);
+    } else if (cycles % longerBreakRequiredCycles === 0) {
+        timer.setTotal(longerBreakTime);
+    } else {
+        timer.setTotal(breakTime);
+    }
 });
