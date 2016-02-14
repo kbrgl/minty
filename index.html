@@ -6,7 +6,7 @@
 		<meta charset="utf-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-		<meta name="theme-color" content="#2fe7ad"/>
+		<meta id="theme-color" name="theme-color" content="#2fe7ad"/>
 
 		<script type="text/javascript">
     	WebFontConfig = {
@@ -69,13 +69,13 @@
 		<section id="options">
 			<h1>Configure Minty</h1>
 			<label for="workTime">Number of minutes for work</label>
-			<input type="number" name="workTime" value="25"/>
+			<input type="number" name="workTime" min="1" value="25"/>
 			<label for="breakTime">Number of minutes for break</label>
-			<input type="number" name="breakTime" value="5"/>
+			<input type="number" name="breakTime" min="1" value="5"/>
 			<label for="longerBreakTime">Number of minutes for extended break time (given every few cycles)</label>
-			<input type="number" name="longerBreakTime" value="20"/>
+			<input type="number" name="longerBreakTime" min="1" value="20"/>
 			<label for="longerBreakRequiredCycles">Number of cycles after which break time is extended</label>
-			<input type="number" name="longerBreakRequiredCycles" value="4"/>
+			<input type="number" name="longerBreakRequiredCycles" min="1" value="4"/>
 			<br/>
 			<button id="submit">SUBMIT</button>
 		</section>

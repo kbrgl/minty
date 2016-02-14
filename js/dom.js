@@ -27,9 +27,11 @@ $(function () {
 
     $("#reset-timer").click(function () {
         timer.reset();
+        timer.name = 'work';
+        timer.setTotal(workTime);
         cycles = 0;
         $("#type").html("");
-        $("#clock").html(formatAsMinutes(workTime));        
+        $("#clock").html(formatAsMinutes(workTime));
         $("#start-timer, #reset-timer, #resume-timer, #type").toggle();
         changeColors(defaultBgColor, defaultFgColor);
     });

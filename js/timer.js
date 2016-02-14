@@ -1,10 +1,5 @@
 // produces timer objects. all time is in seconds.
-function Timer(time, name, callback, endCallback, grabTime) {
-    if (grabTime === undefined) {
-        grabTime = function () {
-            return time;
-        }
-    }
+function Timer(time, name, callbacks, userdefun) {
     "use strict";
     // total time
     var tTime = time;
@@ -14,8 +9,9 @@ function Timer(time, name, callback, endCallback, grabTime) {
 
     // timer name
     this.name = name;
-    
-    this.isreset = true;
+
+    // user defined functions
+    this.userdefun = userdefun;
 
     /* all three vars are used for pause functionality */
     // intervalId isn't local to update() because otherwise I couldn't clearInterval(intervalId) from this.pause() (essentially, the pause method wouldn't work)
@@ -27,26 +23,28 @@ function Timer(time, name, callback, endCallback, grabTime) {
 
     // update timer
     var update = function () {
-        this.isreset = false;
         // grab date at start because this function calculates time by subtracting the start date from subsequent dates
         var startDate = new Date();
 
-        // callback before timing starts otherwise initial update of the timer will be delayed by a second
-        callback();
+        // run main callback at start otherwise there will be a one second delay
+        timeP = Math.floor((new Date() - startDate) / 1000) + tTimeP;
+        rTime = tTime - timeP;
+        callbacks.mainCallback();
+
         intervalId = setInterval(function () {
             // subtracting date gives time in milliseconds. convert to seconds and add tTimeP. if tTimeP were not added, then whenever the update() function is run after this.pause(), the timer will basically reset.
             timeP = Math.floor((new Date() - startDate) / 1000) + tTimeP;
-            
+
             // if there is less than a second remaining, clean things up and exit.
             if (rTime < 1) {
-                callback();
-                tTimeP += timeP;
                 clearInterval(intervalId);
-                endCallback();
+                tTimeP += timeP;
+                callbacks.mainCallback();
+                callbacks.endCallback();
             } else {
                 // calculate remaining time by subtracting timeP from total time
                 rTime = tTime - timeP;
-                callback();
+                callbacks.mainCallback();
             }
         }, 1000);
     };
@@ -71,7 +69,6 @@ function Timer(time, name, callback, endCallback, grabTime) {
         // reset total time passed
         tTimeP = 0;
         rTime = tTime;
-        this.isreset = true;
     };
 
     // get total time
@@ -93,9 +90,4 @@ function Timer(time, name, callback, endCallback, grabTime) {
     this.setTimeRemaining = function (n) {
         rTime = n;
     };
-
-    // expose user provided functions
-    this.grabTime = grabTime;
-    this.callback = callback;
-    this.endCallback = endCallback;
 }

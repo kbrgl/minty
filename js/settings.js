@@ -14,9 +14,7 @@ $(function () {
         setTimeout(function () {
             $("body").css("background-color", initial);
         }, 500);
-        timer.grabTime();
-        if (timer.isreset) {
-            $("#clock").html(formatAsMinutes(workTime));
-        }
+        timer.userdefun.grabTime();
+        $("#clock").html(formatAsMinutes(workTime));
     });
 });
