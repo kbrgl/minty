@@ -1,14 +1,13 @@
-# Minty: minty is nonchalantly timing you
+# Minty
 Minty is a cool [pomodoro timer](http://en.wikipedia.org/ "relevant Wikipedia article") (pun intended) built with a focus on *speed*, *design* and *simplicity*.
 
-## About
-Minty is built using HTML5, CSS (+ Normalize and Skeleton) and JavaScript (+ jQuery) with help from Jekyll. I'm using Font Awesome for the icons.
+## The name
+'Minty' is a recursive acronym: "Minty Is Nonchalantly Timing You." I used 'nonchalantly' because 'nonchalant' is a synonym for 'cool.' And you know what else is cool? Mint.
 
 ## Branches
 ### gh-pages
-Default branch. Everything has to be fully and properly tested for stability before pushing changes.
-(branch became stable on commit 67917cc; all prior commits are to be considered unstable)
+Default branch. Everything should be properly tested before pushing changes.
 
 ### beta
-Development branch. Probably incredibly, incredibly unstable.
+Development branch. Probably incredibly unstable.
 
