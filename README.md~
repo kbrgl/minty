@@ -4,6 +4,9 @@ Minty is a cool [pomodoro timer](http://en.wikipedia.org/ "relevant Wikipedia ar
 ## About
 Minty is built using HTML5, CSS (+ Normalize and Skeleton) and JavaScript (+ jQuery) with help from Jekyll. I'm using Font Awesome for the icons.
 
+## License
+Minty is MIT licensed. For more information, look at the LICENSE file.
+
 ## Branches
 ### gh-pages
 Default branch. Everything has to be fully and properly tested for stability before pushing changes.
