@@ -78,7 +78,8 @@ input {
     color: #424242;
 }
 
-/* The following styles have been lifted from Materialize CSS, with some changes. */
+/* The following styles have been lifted from Materialize CSS, with some changes.
+---------------------------------------------------------------------------------*/
 
 .btn {
     border: none;
@@ -120,6 +121,8 @@ input {
 .btn-shadow {
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.75);
 }
+
+/* Cards */
 
 .card {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -175,4 +178,112 @@ input {
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
     color: #ffd8a6;
+}
+
+/* Switches */
+
+.switch,
+.switch * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+}
+
+.switch label {
+  cursor: pointer;
+}
+
+.switch label input[type=checkbox] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch label input[type=checkbox]:checked + .lever {
+  background-color: #84c7c1;
+}
+
+.switch label input[type=checkbox]:checked + .lever:after {
+  background-color: #26a69a;
+}
+
+.switch label .lever {
+  content: "";
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 15px;
+  background-color: #818181;
+  border-radius: 15px;
+  margin-right: 10px;
+  transition: background 0.3s ease;
+  vertical-align: middle;
+  margin: 0 16px;
+}
+
+.switch label .lever:after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  background-color: #F1F1F1;
+  border-radius: 21px;
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+  left: -5px;
+  top: -3px;
+  transition: left 0.3s ease, background .3s ease, box-shadow 0.1s ease;
+}
+
+input[type=checkbox]:checked:not(:disabled) ~ .lever:active:after {
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(38, 166, 154, 0.1);
+}
+
+input[type=checkbox]:not(:disabled) ~ .lever:active:after {
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(0, 0, 0, 0.08);
+}
+
+.switch label input[type=checkbox]:checked + .lever:after {
+  left: 24px;
+}
+
+.switch input[type=checkbox][disabled] + .lever {
+  cursor: default;
+}
+
+.switch label input[type=checkbox][disabled] + .lever:after,
+.switch label input[type=checkbox][disabled]:checked + .lever:after {
+  background-color: #BDBDBD;
+}
+
+/* A .switch-icon is colored when enabled, uncoloured when disabled. */
+
+.switch-icon label {
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.switch-icon label input[type=checkbox] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.switch-icon label input[type=checkbox]:checked ~ i.alerts {
+  color: #26a69a;
+}
+
+.switch-icon label input[type=checkbox]:checked ~ i.volume:before {
+  content: "volume_off";
+}
+
+.switch-icon label input[type=checkbox]:not(:checked) ~ i.volume:before {
+  content: "volume_up";
+  color: #26a69a;
 }

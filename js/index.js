@@ -11,6 +11,12 @@ if (!localStorage.getItem('longerBreakTime')) {
 if (!localStorage.getItem('longerBreakRequiredCycles')) {
     localStorage.setItem('longerBreakRequiredCycles', 4);
 }
+if (!localStorage.getItem('sound')) {
+    localStorage.setItem('sound', true);
+}
+if (!localStorage.getItem('alerts')) {
+    localStorage.setItem('alerts', false);
+}
 
 // colors used in background and foreground
 var colors = {
@@ -22,6 +28,8 @@ var colors = {
     defaultFgColor: "#ffffff",
 };
 
+var soundEnabled = localStorage.getItem('sound');
+var alertsEnabled = localStorage.getItem('alerts');
 var ntAudio = new Audio("audio/nt.mp3");
 
 var formatAsMinutes = function (seconds) {
@@ -62,7 +70,9 @@ var notify = function (text) {
         });
     }
 
-    ntAudio.play();
+    if (soundEnabled) {
+        ntAudio.play();
+    }
 
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
@@ -245,11 +255,16 @@ $(function () {
         localStorage.setItem('breakTime', $("input[name='breakTime']").val() * 60);
         localStorage.setItem('longerBreakTime', $("input[name='longerBreakTime']").val() * 60);
         localStorage.setItem('longerBreakRequiredCycles', $("input[name='longerBreakRequiredCycles']").val());
+        localStorage.setItem('sound', !($("input[name='sound']").is(':checked')));
+        localStorage.setItem('alerts', $("input[name='alerts']").is(':checked'));
 
         pomodoroTimer.external.config.workTime = $("input[name='workTime']").val() * 60;
         pomodoroTimer.external.config.breakTime = $("input[name='breakTime']").val() * 60;
         pomodoroTimer.external.config.longerBreakTime = $("input[name='longerBreakTime']").val() * 60;
         pomodoroTimer.external.config.longerBreakRequiredCycles = $("input[name='longerBreakRequiredCycles']").val();
+
+        soundEnabled = !($("input[name='sound']").is(':checked'));
+        alertsEnabled = $("input[name='alerts']").is(':checked');
 
         // flash screen to indicate that changes have been saved.
         var initial = $("body").css("background-color");
@@ -262,5 +277,10 @@ $(function () {
         pomodoroTimer.refresh();
         pomodoroTimer.external.callbacks.main(pomodoroTimer.tTime, pomodoroTimer.state);
     });
-});
 
+    $(window).on("beforeunload", function () {
+        if (alertsEnabled) {
+            return "Closing the tab will cause your pomodoros to be reset.";
+        }
+    });
+});
