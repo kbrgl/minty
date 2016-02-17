@@ -187,7 +187,7 @@ input[type="button"] {
   cursor: pointer;
   box-sizing: border-box; }
 
-/*
+
 .button:hover,
 button:hover,
 input[type="submit"]:hover,
@@ -199,7 +199,7 @@ input[type="submit"]:focus,
 input[type="reset"]:focus,
 input[type="button"]:focus {
   outline: 0; }
-*/
+
 
 .button.button-primary,
 button.button-primary,

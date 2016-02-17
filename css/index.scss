@@ -31,8 +31,8 @@ input {
     margin-bottom: 5rem;
 }
 
-.fa {
-    font-size: 150%;
+.material-icons {
+    font-size: 250%;
 }
 
 .status {
@@ -50,20 +50,6 @@ input {
     visibility: hidden;
 }
 
-#options {
-    margin-bottom: 4rem;
-    p {
-        text-align: justify;
-        display: inline-block;
-        margin: 2rem 0;
-    }
-    input[type="number"] {
-        margin: 0;
-        width: 9rem;
-        display: inline-block;
-    }
-}
-
 #footer {
     opacity: 0.7;
 }
@@ -74,7 +60,7 @@ input {
 
 #clock {
     font-family: $clock-font;
-    font-weight: 100;
+    font-weight: 500;
     font-size: 10rem;
     padding: 0;
     margin: 0;
@@ -89,5 +75,104 @@ input {
 
 #cog {
     border-color: #616161 !important;
-    color: #616161;
+    color: #424242;
+}
+
+/* The following styles have been lifted from Materialize CSS, with some changes. */
+
+.btn {
+    border: none;
+    border-radius: 3px;
+    display: inline-block;
+    height: 5rem;
+    line-height: 5rem;
+    outline: 0;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: .5px;
+    transition: .2s ease-out;
+    cursor: pointer;
+    i {
+        line-height: inherit;
+    }
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    &:focus {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+.btn-colored {
+    background-color: rgb(66, 66, 66);
+    &:hover {
+        background-color: rgb(100, 100, 100);
+    }
+    &:focus {
+        background-color: rgb(30, 30, 30);
+    }
+}
+
+.btn-shadow {
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.75);
+}
+
+.card {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    position: relative;
+    margin: 0 0 4rem 0;
+    background-color: #ffffff;
+    color: #424242;
+    transition: box-shadow .25s;
+    border-radius: 3px;
+}
+
+.card .card-title {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.card .card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+}
+
+.card .card-content p {
+    input[type="number"] {
+        background-color: rgba(0, 0, 0, 0);
+        border: 0;
+        border-radius: 0px;
+        outline: 0;
+        margin-bottom: 0.5rem;
+        width: 9rem;
+        display: inline-block;
+        border-bottom: 2px solid #555555;
+    }
+    text-align: justify;
+    margin: 0;
+    color: inherit;
+}
+
+.card .card-content .card-title {
+    line-height: 48px;
+}
+
+.card .card-action {
+    border-top: 1px solid rgba(160, 160, 160, 0.2);
+    padding: 20px;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+    color: #ffab40;
+    margin-right: 20px;
+    transition: color .3s ease;
+    text-transform: uppercase;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
+    color: #ffd8a6;
 }
