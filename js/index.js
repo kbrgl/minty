@@ -38,6 +38,32 @@ var changeColors = function (background, foreground) {
     $("#theme-color").attr("content", background);
 };
 
+var notify = function (text) {
+  // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+      return;
+    }
+
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+        var notification = new Notification(text);
+    }
+
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+          // If the user accepts, let's create a notification
+            if (permission === "granted") {
+                var notification = new Notification(text);
+            }
+        });
+    }
+
+    // At last, if the user has denied notifications, and you
+    // want to be respectful there is no need to bother them any more.
+};
+
 var external = {
     callbacks: {
         main: function (seconds, state) {
@@ -51,8 +77,10 @@ var external = {
         },
         end: function (to) {
             if (to > 0) {
+                notify('Your break has ended!');
                 changeColors(colors.breakBgColor, colors.breakFgColor);
             } else {
+                notify('It\'s time to take a break.');
                 changeColors(colors.workBgColor, colors.workFgColor);
             }
         },
@@ -153,6 +181,7 @@ pomodoroTimer.internalReset = function () {
 };
 
 pomodoroTimer.reset = function () {
+    this.tTime = this.external.config.workTime;
     this.tTimeP = 0;
     this.cycles = 0;
     this.rTime = this.tTime;
