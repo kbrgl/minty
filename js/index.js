@@ -70,7 +70,7 @@ var notify = function (text) {
         });
     }
 
-    if (soundEnabled) {
+    if (soundEnabled === true) {
         ntAudio.play();
     }
 
@@ -219,6 +219,16 @@ $(function () {
     $("#options").hide();
     $("#pause-timer, #resume-timer, #reset-timer").hide();
     $("#clock").html(formatAsMinutes(pomodoroTimer.tTime));
+    $("input[name='workTime']").attr('value', pomodoroTimer.external.config.workTime / 60);
+    $("input[name='breakTime']").attr('value', pomodoroTimer.external.config.breakTime / 60);
+    $("input[name='longerBreakTime']").attr('value', pomodoroTimer.external.config.extendedBreakTime / 60);
+    $("input[name='longerBreakRequiredCycles']").attr('value', pomodoroTimer.external.config.extendedBreakRequiredCycles);
+    if (soundEnabled) {
+        $("input[name='sound']").removeAttr('checked');
+    }
+    if (alertsEnabled) {
+        $("input[name='alerts']").attr('checked');
+    }
 
     $("#start-timer").click(function () {
         changeColors(colors.workBgColor, colors.workFgColor);
@@ -279,8 +289,10 @@ $(function () {
     });
 
     $(window).on("beforeunload", function () {
-        if (alertsEnabled) {
+        if (alertsEnabled === true) {
             return "Closing the tab will cause your pomodoros to be reset.";
+        } else {
+            return;
         }
     });
 });

@@ -64,13 +64,15 @@
         <div id="options" class="card">
             <div class="card-content">
                 <span class="card-title">Configure Minty</span>
-                <p>I want to work <input type="number" name="workTime" min="1" value="25"/> minutes and take <input type="number" name="breakTime" min="1" value="5"/> minute breaks. I'd like my break time to be extended after <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/>
-                pomodoros. Extended breaks should last for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p>
+                <ul>
+                	<li><p>One pomodoro is <input type="number" name="workTime" min="1" value="25"/> minutes of work followed by a <input type="number" name="breakTime" min="1" value="5"/> minute break.</p></li>
+                	<li><p>After every <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/> pomodoros, give an extended break for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p></li>
+                </ul>
             </div>
             <div class="card-action">
                 <span title="Turn notification sound on or off" class="switch-icon">
     				<label>
-    					<input name="sound" type="checkbox"/>
+    					<input name="sound" type="checkbox" checked/>
     					<i class="material-icons volume"></i>
     				</label>
   				</span>
