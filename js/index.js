@@ -22,6 +22,8 @@ var colors = {
     defaultFgColor: "#ffffff",
 };
 
+var ntAudio = new Audio("audio/nt.mp3");
+
 var formatAsMinutes = function (seconds) {
     if (seconds >= 0) {
         return Math.floor(seconds / 60) + ":" + (seconds % 60 < 10 ? "0" : "") + seconds % 60;
@@ -60,6 +62,8 @@ var notify = function (text) {
         });
     }
 
+    ntAudio.play();
+
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
 };
@@ -67,7 +71,6 @@ var notify = function (text) {
 var external = {
     callbacks: {
         main: function (seconds, state) {
-            console.log("State is " + state);
             if (state < 0) {
                 $("#clock").html(formatAsMinutes(seconds));
             } else {
