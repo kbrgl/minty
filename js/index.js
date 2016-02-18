@@ -1,259 +1,254 @@
-// if not currently stored, then set timings in local storage.
-if (!localStorage.getItem('workTime')) {
-    localStorage.setItem('workTime', 25 * 60);
-}
-if (!localStorage.getItem('breakTime')) {
-    localStorage.setItem('breakTime', 5 * 60);
-}
-if (!localStorage.getItem('longerBreakTime')) {
-    localStorage.setItem('longerBreakTime', 20 * 60);
-}
-if (!localStorage.getItem('longerBreakRequiredCycles')) {
-    localStorage.setItem('longerBreakRequiredCycles', 4);
-}
-if (!localStorage.getItem('sound')) {
-    localStorage.setItem('sound', true);
-}
-if (!localStorage.getItem('alerts')) {
-    localStorage.setItem('alerts', false);
-}
-
-// colors used in background and foreground
-var colors = {
-    workBgColor: "#303030",
-    workFgColor: "#ffffff",
-    breakBgColor: "#2fe7ad",
-    breakFgColor: "#ffffff",
-    defaultBgColor: '#00e676',
-    defaultFgColor: "#ffffff",
-};
-
-var soundEnabled = localStorage.getItem('sound');
-var alertsEnabled = localStorage.getItem('alerts');
-var ntAudio = new Audio("audio/nt.mp3");
-
-var formatAsMinutes = function (seconds) {
-    if (seconds >= 0) {
-        return Math.floor(seconds / 60) + ":" + (seconds % 60 < 10 ? "0" : "") + seconds % 60;
-    } else {
-        return "-(" + Math.floor(-seconds / 60) + ":" + (-seconds % 60 < 10 ? "0" : "") + -seconds % 60 + ")";
-    }
-};
-
-var changeColors = function (background, foreground) {
-    $("body").css("background", background);
-    $("body").css("color", foreground);
-    $(".status").css("border-left-color", foreground);
-    $("button").css("border-color", foreground);
-    $("#theme-color").attr("content", background);
-};
-
-var notify = function (text) {
-  // Let's check if the browser supports notifications
-    if (!("Notification" in window)) {
-      return;
+function Timer(totalTime, options) {
+    if (!totalTime) {
+        return;
     }
 
-    // Let's check whether notification permissions have already been granted
-    else if (Notification.permission === "granted") {
-    // If it's okay let's create a notification
-        var notification = new Notification(text);
+    // default options
+    options = options || {};
+    options.delay = options.delay || 1;
+    options.callback = options.callback || function () {};
+    options.render = options.render || function () {};
+
+    var offset = 0,
+        id = null,
+        time;
+
+    reset();
+
+    // private functions
+    function start() {
+        if (!id) {
+            offset = new Date;
+            id = setInterval(update, options.delay);
+        }
     }
 
-    // Otherwise, we need to ask the user for permission
-    else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
-          // If the user accepts, let's create a notification
-            if (permission === "granted") {
-                var notification = new Notification(text);
-            }
-        });
+    function update() {
+        time -= delta();
+        if (time < 0) {
+            reset();
+            options.callback();
+        } else {
+            render();
+        }
     }
 
-    if (soundEnabled === true) {
-        ntAudio.play();
+    function delta() {
+        var now = new Date;
+        d = now - offset;
+
+        offset = now;
+        return d;
     }
 
-    // At last, if the user has denied notifications, and you
-    // want to be respectful there is no need to bother them any more.
-};
+    function pause() {
+        if (id) {
+            clearInterval(id);
+            id = null;
+        }
+    }
 
-var external = {
-    callbacks: {
-        main: function (seconds, state) {
-            if (state < 0) {
-                $("#clock").html(formatAsMinutes(seconds));
+    function reset() {
+        pause();
+        time = totalTime;
+        render();
+    }
+
+    function render() {
+        options.render(time);
+    }
+
+    // public API
+    this.start = start;
+    this.pause = pause;
+    this.reset = reset;
+}
+
+function PomodoroTimer (options) {
+    // default options
+    options = options || {};
+    options.initialState = options.initialState || 0;
+    options.workTime = options.workTime || 25 * 60 * 1000;
+    options.breakTime = options.breakTime || 5 * 60 * 1000;
+    options.extendedBreakTime = options.extendedBreakTime || 30 * 60 * 1000;
+    options.extendedBreakCycles = options.extendedBreakCycles || 4;
+    options.render = options.render || function () {};
+    options.stateChange = options.stateChange || function () {};
+    options.delay = options.delay || 1;
+
+    // used internally
+    var state, cycles, timer;
+
+    // options passed to created timer objects
+    var timerOptions =
+    {
+            render: options.render,
+            callback: function () {
+                nextTimer();
+                options.stateChange(state);
+                start();
+            },
+            delay: options.delay,
+    };
+
+    reset();
+
+    // private functions
+    function nextTimer () {
+        if (state === 0) {
+            cycles += 1;
+            if (cycles % options.extendedBreakCycles === 0) {
+                state = 2;
+                timer = new Timer(options.extendedBreakTime, timerOptions);
             } else {
-                $("#clock").html(formatAsMinutes(seconds));
-                $("#type").html(state === 0 ? 'work' : 'break');
+                state = 1;
+                timer = new Timer(options.breakTime, timerOptions);
+            }
+        } else {
+            state = 0;
+            timer = new Timer(options.workTime, timerOptions);
+        }
+    }
+
+    function start () {
+        timer.start();
+        options.stateChange(state);
+    }
+
+    function pause () {
+        timer.pause();
+    }
+
+    function reset () {
+        state = options.initialState;
+        if (state === 0) {
+            timer = new Timer(options.workTime, timerOptions);
+        } else if (state === 1) {
+            timer = new Timer(options.breakTime, timerOptions);
+        } else if (state === 2) {
+            timer = new Timer(options.extendedBreakTime, timerOptions);
+        }
+        cycles = 0;
+    }
+
+    function refresh (newOptions) {
+        options = newOptions || {};
+        options.initialState = newOptions.initialState || 0;
+        options.workTime = newOptions.workTime || 25 * 60 * 1000;
+        options.breakTime = newOptions.breakTime || 5 * 60 * 1000;
+        options.extendedBreakTime = newOptions.extendedBreakTime || 30 * 60 * 1000;
+        options.extendedBreakCycles = newOptions.extendedBreakCycles || 4;
+        options.render = newOptions.render || function () {};
+        options.stateChange = newOptions.stateChange || function () {};
+        options.delay = newOptions.delay || 1;
+    }
+
+    // public API
+    this.refresh = refresh;
+    this.start = start;
+    this.reset = reset;
+    this.pause = pause;
+}
+
+$(function () {
+    var defaults = {
+        workTime: 25 * 1000 * 60,
+        breakTime: 5 * 1000 * 60,
+        extendedbreakTime: 30 * 1000 * 60,
+        extendedBreakCycles: 4,
+    };
+
+    if (!localStorage.getItem('workTime')) {
+        localStorage.setItem('workTime', defaults.workTime);
+    }
+    if (!localStorage.getItem('breakTime')) {
+        localStorage.setItem('breakTime', defaults.breakTime);
+    }
+    if (!localStorage.getItem('longerBreakTime')) {
+        localStorage.setItem('longerBreakTime', defaults.extendedbreakTime);
+    }
+    if (!localStorage.getItem('longerBreakRequiredCycles')) {
+        localStorage.setItem('longerBreakRequiredCycles', defaults.extendedBreakCycles);
+    }
+
+    var changeColors = function (background) {
+        $("body").css("background", background);
+        $("#theme-color").attr("content", background);
+    };
+
+    var colors = {
+        workBgColor: "#303030",
+        breakBgColor: "#2fe7ad",
+        defaultBgColor: "#00e676",
+        flashColor: "#7c4dff"
+    };
+
+    var options = {
+        render: function (time) {
+            if (time || time === 0) {
+                time = Math.round(time / 1000);
+                time = Math.round(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + time % 60
+                $("#clock").html(time);
+            } else {
+                console.log("error: strange render argument: " + time)
             }
         },
-        end: function (to) {
-            if (to > 0) {
-                notify('Your break has ended!');
-                changeColors(colors.breakBgColor, colors.breakFgColor);
-            } else {
-                notify('It\'s time to take a break.');
-                changeColors(colors.workBgColor, colors.workFgColor);
-            }
-        },
-        time: function (state) {
+        stateChange: function (state) {
             if (state === 0) {
-                return this.config.workTime;
-            }
-            else if (state === 1) {
-                return this.config.breakTime;
-            }
-            else if (state === 2) {
-                return this.config.extendedBreakTime;
+                $("#type").html("work");
+                changeColors(colors.workBgColor);
+            } else if (state === 1) {
+                $("#type").html("break");
+                changeColors(colors.breakBgColor);
+            } else if (state === 2) {
+                $("#type").html("extended break");
+                changeColors(colors.breakBgColor);
+            } else {
+                console.log("error: unknown state");
             }
         },
-    },
-    config: {
         workTime: localStorage.getItem('workTime'),
         breakTime: localStorage.getItem('breakTime'),
         extendedBreakTime: localStorage.getItem('longerBreakTime'),
-        extendedBreakRequiredCycles: localStorage.getItem('longerBreakRequiredCycles'),
-    },
-};
-
-var pomodoroTimer = {
-    external: external,
-    tTime: this.external.config.workTime,
-    rTime: this.tTime,
-    state: -1,
-    cycles: 0,
-    timeP: 0,
-    tTimeP: 0,
-    intervalId: null,
-};
-
-pomodoroTimer.decrement = function (startDate) {
-    this.timeP = Math.floor((new Date() - startDate) / 1000) + this.tTimeP;
-    if (this.rTime < 1) {
-        this.pause();
-        this.tTimeP += this.timeP;
-
-        if (this.state === 0) {
-            this.cycles++;
-        }
-
-        if (this.cycles % this.external.config.extendedBreakRequiredCycles === 0) {
-            if (this.cycles === this.state) {
-                this.state = 0;
-            } else {
-                this.state = 2;
-            }
-        } else {
-            this.state = (this.state + 1) % 2;
-        }
-
-        if (this.state === 0) {
-            this.tTime = this.external.config.workTime;
-        } else {
-            if (this.state === 1) {
-                this.tTime = this.external.config.breakTime;
-            } else if (this.state === 2) {
-                this.tTime = this.external.config.extendedBreakTime;
-            }
-        }
-
-        this.external.callbacks.main(this.rTime, this.state);
-        this.external.callbacks.end(this.state);
-        this.internalReset();
-        this.resume();
-    } else {
-        this.rTime = this.tTime - this.timeP;
-        this.external.callbacks.main(this.rTime, this.state);
-    }
-};
-
-pomodoroTimer.start = function () {
-    this.state = 0;
-    this.resume();
-};
-
-pomodoroTimer.resume = function () {
-    var startDate = new Date();
-
-    this.timeP = Math.floor((new Date() - startDate) / 1000) + this.tTimeP;
-    this.rTime = this.tTime - this.timeP;
-    this.external.callbacks.main(this.rTime, this.state);
-
-    this.intervalId = setInterval(this.decrement.bind(this, startDate), 1000);
-};
-
-pomodoroTimer.pause = function () {
-    clearInterval(this.intervalId);
-    this.tTimeP = this.timeP;
-};
-
-pomodoroTimer.internalReset = function () {
-    this.tTimeP = 0;
-    this.rTime = this.tTime;
-};
-
-pomodoroTimer.reset = function () {
-    this.tTime = this.external.config.workTime;
-    this.tTimeP = 0;
-    this.cycles = 0;
-    this.rTime = this.tTime;
-    this.state = -1;
-};
-
-pomodoroTimer.refresh = function () {
-    if (this.state < 1) {
-        this.tTime = this.external.config.workTime;
-    } else if (this.state === 1) {
-        this.tTime = this.external.config.breakTime;
-    } else if (this.state === 2) {
-        this.tTime = this.external.config.extendedBreakTime;
-    }
-};
-
-$(function () {
-    "use strict";
+        extendedBreakCycles: localStorage.getItem('longerBreakRequiredCycles'),
+        delay: 1000,
+    };
+    var t = new PomodoroTimer(options);
 
     // initialize the app. rest of the behaviours are bound to events.
-    changeColors(colors.defaultBgColor, colors.defaultFgColor);
+    changeColors(colors.defaultBgColor);
     $("#options").hide();
     $("#pause-timer, #resume-timer, #reset-timer").hide();
-    $("#clock").html(formatAsMinutes(pomodoroTimer.tTime));
-    $("input[name='workTime']").attr('value', pomodoroTimer.external.config.workTime / 60);
-    $("input[name='breakTime']").attr('value', pomodoroTimer.external.config.breakTime / 60);
-    $("input[name='longerBreakTime']").attr('value', pomodoroTimer.external.config.extendedBreakTime / 60);
-    $("input[name='longerBreakRequiredCycles']").attr('value', pomodoroTimer.external.config.extendedBreakRequiredCycles);
-    if (soundEnabled) {
-        $("input[name='sound']").removeAttr('checked');
-    }
-    if (alertsEnabled) {
-        $("input[name='alerts']").attr('checked');
-    }
+
+    // form persistence
+    $("input[name='workTime']").attr('value', Math.ceil(options.workTime / 1000 / 60));
+    $("input[name='breakTime']").attr('value', Math.ceil(options.breakTime / 1000 / 60));
+    $("input[name='longerBreakTime']").attr('value', Math.ceil(options.extendedBreakTime / 1000 / 60));
+    $("input[name='longerBreakRequiredCycles']").attr('value', options.extendedBreakCycles);
 
     $("#start-timer").click(function () {
-        changeColors(colors.workBgColor, colors.workFgColor);
-        pomodoroTimer.start();
+        changeColors(colors.workBgColor);
+        t.start();
         $("#start-timer").hide();
         $("#pause-timer, #clock").show();
         $("#type").fadeIn(500, 'linear');
     });
 
     $("#pause-timer").click(function () {
-        pomodoroTimer.pause();
+        t.pause();
         $("#pause-timer, #resume-timer, #reset-timer").toggle();
     });
 
     $("#resume-timer").click(function () {
-        pomodoroTimer.resume();
+        t.start();
         $("#pause-timer, #resume-timer, #reset-timer").toggle();
     });
 
     $("#reset-timer").click(function () {
-        pomodoroTimer.reset();
+        t.reset();
         $("#type").html("");
-        $("#clock").html(formatAsMinutes(pomodoroTimer.tTime));
         $("#start-timer, #reset-timer, #resume-timer, #type").toggle();
-        changeColors(colors.defaultBgColor, colors.defaultFgColor);
+        changeColors(colors.defaultBgColor);
     });
 
     $("#cog").click(function () {
@@ -261,38 +256,32 @@ $(function () {
     });
 
     $("#submit").click(function () {
-        localStorage.setItem('workTime', $("input[name='workTime']").val() * 60);
-        localStorage.setItem('breakTime', $("input[name='breakTime']").val() * 60);
-        localStorage.setItem('longerBreakTime', $("input[name='longerBreakTime']").val() * 60);
-        localStorage.setItem('longerBreakRequiredCycles', $("input[name='longerBreakRequiredCycles']").val());
-        localStorage.setItem('sound', !($("input[name='sound']").is(':checked')));
-        localStorage.setItem('alerts', $("input[name='alerts']").is(':checked'));
+        options.workTime = $("input[name='workTime']").val() * 1000 * 60;
+        options.breakTime = $("input[name='breakTime']").val() * 1000 * 60;
+        options.extendedBreakTime = $("input[name='longerBreakTime']").val() * 1000 * 60;
+        options.extendedBreakCycles = $("input[name='longerBreakRequiredCycles']").val();
 
-        pomodoroTimer.external.config.workTime = $("input[name='workTime']").val() * 60;
-        pomodoroTimer.external.config.breakTime = $("input[name='breakTime']").val() * 60;
-        pomodoroTimer.external.config.longerBreakTime = $("input[name='longerBreakTime']").val() * 60;
-        pomodoroTimer.external.config.longerBreakRequiredCycles = $("input[name='longerBreakRequiredCycles']").val();
+        t.refresh(options);
 
-        soundEnabled = !($("input[name='sound']").is(':checked'));
-        alertsEnabled = $("input[name='alerts']").is(':checked');
+        localStorage.setItem('workTime', options.workTime);
+        localStorage.setItem('breakTime', options.breakTime);
+        localStorage.setItem('longerBreakTime', options.extendedBreakTime);
+        localStorage.setItem('longerBreakRequiredCycles', options.extendedBreakCycles);
 
         // flash screen to indicate that changes have been saved.
         var initial = $("body").css("background-color");
         $("#options").hide(200);
-        $("body").css("background-color", "#7c4dff");
+        $("body").css("background-color", colors.flashColor);
         setTimeout(function () {
             $("body").css("background-color", initial);
         }, 500);
-
-        pomodoroTimer.refresh();
-        pomodoroTimer.external.callbacks.main(pomodoroTimer.tTime, pomodoroTimer.state);
     });
 
-    $(window).on("beforeunload", function () {
-        if (alertsEnabled === true) {
-            return "Closing the tab will cause your pomodoros to be reset.";
-        } else {
-            return;
-        }
+    $("#defaultify").click(function () {
+        $("input[name='workTime']").attr('value', Math.ceil(defaults.workTime / 1000 / 60));
+        $("input[name='breakTime']").attr('value', Math.ceil(defaults.breakTime / 1000 / 60));
+        $("input[name='longerBreakTime']").attr('value', Math.ceil(defaults.extendedBreakTime / 1000 / 60));
+        $("input[name='longerBreakRequiredCycles']").attr('value', defaults.extendedBreakCycles);
+        $("#submit").click();
     });
 });
