@@ -9,3 +9,7 @@ github_username: kbrgl
 
 # Build settings
 markdown: kramdown
+sass:
+  style: compressed
+gems:
+ - jekyll-coffeescript
