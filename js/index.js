@@ -18,7 +18,7 @@ function Timer(totalTime, options) {
     // private functions
     function start() {
         if (!id) {
-            offset = new Date;
+            offset = new Date();
             id = setInterval(update, options.delay);
         }
     }
@@ -34,8 +34,8 @@ function Timer(totalTime, options) {
     }
 
     function delta() {
-        var now = new Date;
-        d = now - offset;
+        var now = new Date();
+        var d = now - offset;
 
         offset = now;
         return d;
@@ -186,11 +186,11 @@ $(function () {
     var options = {
         render: function (time) {
             if (time || time === 0) {
-                time = Math.round(time / 1000);
-                time = Math.round(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + time % 60
+                time = Math.ceil(time / 1000);
+                time = Math.trunc(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + time % 60;
                 $("#clock").html(time);
             } else {
-                console.log("error: strange render argument: " + time)
+                console.log("error: strange render argument: " + time);
             }
         },
         stateChange: function (state) {
@@ -213,6 +213,7 @@ $(function () {
         extendedBreakCycles: localStorage.getItem('longerBreakRequiredCycles'),
         delay: 1000,
     };
+
     var t = new PomodoroTimer(options);
 
     // initialize the app. rest of the behaviours are bound to events.
@@ -221,9 +222,9 @@ $(function () {
     $("#pause-timer, #resume-timer, #reset-timer").hide();
 
     // form persistence
-    $("input[name='workTime']").attr('value', Math.ceil(options.workTime / 1000 / 60));
-    $("input[name='breakTime']").attr('value', Math.ceil(options.breakTime / 1000 / 60));
-    $("input[name='longerBreakTime']").attr('value', Math.ceil(options.extendedBreakTime / 1000 / 60));
+    $("input[name='workTime']").attr('value', options.workTime / 1000 / 60);
+    $("input[name='breakTime']").attr('value', options.breakTime / 1000 / 60);
+    $("input[name='longerBreakTime']").attr('value', options.extendedBreakTime / 1000 / 60);
     $("input[name='longerBreakRequiredCycles']").attr('value', options.extendedBreakCycles);
 
     $("#start-timer").click(function () {
@@ -278,9 +279,9 @@ $(function () {
     });
 
     $("#defaultify").click(function () {
-        $("input[name='workTime']").attr('value', Math.ceil(defaults.workTime / 1000 / 60));
-        $("input[name='breakTime']").attr('value', Math.ceil(defaults.breakTime / 1000 / 60));
-        $("input[name='longerBreakTime']").attr('value', Math.ceil(defaults.extendedBreakTime / 1000 / 60));
+        $("input[name='workTime']").attr('value', defaults.workTime / 1000 / 60);
+        $("input[name='breakTime']").attr('value', defaults.breakTime / 1000 / 60);
+        $("input[name='longerBreakTime']").attr('value', defaults.extendedBreakTime / 1000 / 60);
         $("input[name='longerBreakRequiredCycles']").attr('value', defaults.extendedBreakCycles);
         $("#submit").click();
     });
