@@ -172,7 +172,7 @@
         var defaults = {
             workTime: 25 * 1000 * 60,
             breakTime: 5 * 1000 * 60,
-            extendedbreakTime: 30 * 1000 * 60,
+            extendedBreakTime: 30 * 1000 * 60,
             extendedBreakCycles: 4,
         };
 
