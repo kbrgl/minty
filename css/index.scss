@@ -28,7 +28,7 @@ input {
 }
 
 .container {
-  margin-top: 15%;
+  margin-top: 20vh !important;
   margin-bottom: 2rem;
 }
 
@@ -37,6 +37,16 @@ input {
 }
 
 .material-icons {
+  font-size: 200%;
+  padding: 0;
+  margin: 0;
+  line-height: 0.8;
+  display: inline;
+}
+
+.btn .material-icons,
+button.btn .material-icons,
+button .material-icons {
   font-size: 250%;
 }
 

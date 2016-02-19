@@ -66,8 +66,6 @@
                 totalTime = newTotal;
                 time = totalTime;
                 render();
-            } else {
-                console.log("error: strange argument: " + newTotal);
             }
         };
         this.start = start;
@@ -207,8 +205,6 @@
                     time = Math.ceil(time / 1000);
                     time = Math.trunc(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + time % 60;
                     $("#clock").html(time);
-                } else {
-                    console.log("error: strange argument: " + time);
                 }
             },
             stateChange: function (state) {
@@ -221,8 +217,6 @@
                 } else if (state === 2) {
                     $("#type").html("extended break");
                     changeColors(colors.breakBgColor);
-                } else {
-                    console.log("error: strange argument: " + state);
                 }
             },
             workTime: localStorage.getItem('workTime'),
