@@ -35,65 +35,67 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     	<link rel="stylesheet" href="{{ '/css/index.css' | prepend: site.baseurl }}"/>
 	</head>
-	<body class="container">
-		<div class="main">
-			<div class="status">
-				<div id="clock"></div>
-				<div id="type"></div>
+	<body>
+		<div class="container">
+			<div class="main">
+				<div class="status">
+					<div id="clock"></div>
+					<div id="type"></div>
+				</div>
+
+				<nav class="buttons">
+					<button class="btn btn-colored btn-shadow" id="start-timer">
+						<i class="material-icons">play_arrow</i>
+					</button>
+					<button class="btn btn-colored btn-shadow" id="pause-timer">
+						<i class="material-icons">pause</i>
+					</button>
+					<button class="btn btn-colored btn-shadow" id="resume-timer">
+						<i class="material-icons">play_arrow</i>
+					</button>
+					<button class="btn btn-colored btn-shadow" id="reset-timer">
+						<i class="material-icons">replay</i>
+					</button>
+					<button class="btn" id="cog">
+						<i class='material-icons'>settings</i>
+					</button>
+				</nav>
 			</div>
 
-			<nav class="buttons">
-				<button class="btn btn-colored btn-shadow" id="start-timer">
-					<i class="material-icons">play_arrow</i>
-				</button>
-				<button class="btn btn-colored btn-shadow" id="pause-timer">
-					<i class="material-icons">pause</i>
-				</button>
-				<button class="btn btn-colored btn-shadow" id="resume-timer">
-					<i class="material-icons">play_arrow</i>
-				</button>
-				<button class="btn btn-colored btn-shadow" id="reset-timer">
-					<i class="material-icons">replay</i>
-				</button>
-				<button class="btn" id="cog">
-					<i class='material-icons'>settings</i>
-				</button>
-			</nav>
+	        <div id="options" class="card">
+	            <div class="card-content">
+	                <span class="card-title">Configure Minty</span>
+	                <ul>
+	                	<li><p>One pomodoro is <input type="number" name="workTime" min="1" value="25"/> minutes of work followed by a <input type="number" name="breakTime" min="1" value="5"/> minute break.</p></li>
+	                	<li><p>After every <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/> pomodoros, give an extended break for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p></li>
+	                </ul>
+	            </div>
+	            <!--
+	            <div class="card-action">
+	                <span title="Turn notification sound on or off" class="switch-icon">
+	    				<label>
+	    					<input name="sound" type="checkbox" checked/>
+	    					<i class="material-icons volume"></i>
+	    				</label>
+	  				</span>
+	  				<span title="Display a confirmation box when leaving Minty" class="switch-icon">
+	    				<label>
+	    					<input name="alerts" type="checkbox"/>
+	    					<i class="material-icons alerts">warning</i>
+	    				</label>
+	  				</span>
+	            </div>
+	            -->
+	            <div class="card-action">
+	                <a id="submit">Save changes</a>
+	                <a id="defaultify" style="float:right;"><i class="material-icons">settings_backup_restore</i></a>
+	            </div>
+	        </div>
+
+			<section>
+				<p>Minty: a simple <a href="//en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank"> pomodoro timer</a>. <a onclick="alert('Minty is a pomodoro timer with a focus on speed, simplicity and design. What\'s a pomodoro timer, you ask? Well, a pomodoro timer is a timer that breaks down work into intervals, traditionally 25 minutes in length, separated by short breaks. These intervals are called pomodoros, the plural in English of the Italian word pomodoro, which means tomato. The method is based on the idea that frequent breaks can improve mental agility.')">[about minty]</a></p>
+				<p id="footer">(c) 2016 Kabir Goel. Hosted on <a href="//github.com/kbrgl/minty" target="_blank">GitHub</a>.</p>
+			</section>
 		</div>
-
-        <div id="options" class="card">
-            <div class="card-content">
-                <span class="card-title">Configure Minty</span>
-                <ul>
-                	<li><p>One pomodoro is <input type="number" name="workTime" min="1" value="25"/> minutes of work followed by a <input type="number" name="breakTime" min="1" value="5"/> minute break.</p></li>
-                	<li><p>After every <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/> pomodoros, give an extended break for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p></li>
-                </ul>
-            </div>
-            <!--
-            <div class="card-action">
-                <span title="Turn notification sound on or off" class="switch-icon">
-    				<label>
-    					<input name="sound" type="checkbox" checked/>
-    					<i class="material-icons volume"></i>
-    				</label>
-  				</span>
-  				<span title="Display a confirmation box when leaving Minty" class="switch-icon">
-    				<label>
-    					<input name="alerts" type="checkbox"/>
-    					<i class="material-icons alerts">warning</i>
-    				</label>
-  				</span>
-            </div>
-            -->
-            <div class="card-action">
-                <a id="submit">Save changes</a>
-                <a id="defaultify" style="float:right;"><i class="material-icons">settings_backup_restore</i></a>
-            </div>
-        </div>
-
-		<section>
-			<p>Minty: a simple <a href="//en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank"> pomodoro timer</a>. <a onclick="alert('Minty is a pomodoro timer with a focus on speed, simplicity and design. What\'s a pomodoro timer, you ask? Well, a pomodoro timer is a timer that breaks down work into intervals, traditionally 25 minutes in length, separated by short breaks. These intervals are called pomodoros, the plural in English of the Italian word pomodoro, which means tomato. The method is based on the idea that frequent breaks can improve mental agility.')">[about minty]</a></p>
-			<p id="footer">(c) 2016 Kabir Goel. Hosted on <a href="//github.com/kbrgl/minty" target="_blank">GitHub</a>.</p>
-		</section>
 	</body>
 </html>
