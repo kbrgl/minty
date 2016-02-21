@@ -88,6 +88,7 @@ gulp.task('webserver', function() {
 
 gulp.task('deploy', ['clean', 'build'], function () {
 	return gulp.src('./**/*')
+		.pipe(plugins.gitignore())
 		.pipe(plugins.ghPages());
 });
 
