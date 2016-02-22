@@ -12,8 +12,8 @@ var inquirer = require('inquirer');
 var sourceDir = './src';
 var buildDir = './build';
 
-// tasks
-gulp.task('build:js', function (cb) {
+// build stuff
+gulp.task('build:js', function () {
 	var browserified = through2.obj(function (file, enc, next) {
 		browserify(file.path)
 			.bundle(function(err, res) {
@@ -23,63 +23,59 @@ gulp.task('build:js', function (cb) {
 			});
 	});
 
-	gulp.src(sourceDir + '/**/*.js')
+	return gulp.src(sourceDir + '/**/*.js')
 		.pipe(plugins.xo())
 		.pipe(browserified)
 		.pipe(plugins.uglify())
 		.pipe(plugins.concat('/scripts/main.js'))
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:coffee', function (cb) {
-	gulp.src(sourceDir + '/**/*.coffee')
+gulp.task('build:coffee', function () {
+	return gulp.src(sourceDir + '/**/*.coffee')
 		.pipe(plugins.coffeelint())
 		.pipe(plugins.coffee())
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:css', function (cb) {
-	gulp.src(sourceDir + '/**/*.css')
+gulp.task('build:css', function () {
+	return gulp.src(sourceDir + '/**/*.css')
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:scss', function (cb) {
-	gulp.src(sourceDir + '/**/*.scss')
-		// currently disabled because it is super slow
-		//.pipe(plugins.scssLint())
+gulp.task('build:scss', function () {
+	return gulp.src(sourceDir + '/**/*.scss')
+		.pipe(plugins.scssLint())
 		.pipe(plugins.sass())
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:html', function (cb) {
-	gulp.src(sourceDir + '/**/*.html')
+gulp.task('build:html', function () {
+	return gulp.src(sourceDir + '/**/*.html')
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:extras', function (cb) {
-	gulp.src(sourceDir + '/**/*')
+gulp.task('build:extras', function () {
+	return gulp.src(sourceDir + '/**/*')
 		.pipe(gulp.dest(buildDir));
-	cb();
 });
 
-gulp.task('build:bower', function (cb) {
-	gulp.src(mainBowerFiles())
+gulp.task('build:bower', function () {
+	return gulp.src(mainBowerFiles())
 		.pipe(plugins.uglify())
 		.pipe(gulp.dest(buildDir + '/lib/'));
-	cb();
 });
 
+// deletes the build directory
 gulp.task('clean', function () {
-	return del([buildDir + '/']);
+	return del([buildDir]);
 });
 
+// compose build subtasks into one big build task
 gulp.task('build', gulp.series('clean', gulp.parallel('build:js', 'build:coffee', 'build:css', 'build:scss', 'build:html', 'build:extras', 'build:bower')));
 
+
+// starts a webserver using the gulp-webserver plugin
 gulp.task('webserver', function() {
 	gulp.src(buildDir)
 		.pipe(plugins.webserver({
@@ -90,41 +86,17 @@ gulp.task('webserver', function() {
 			open: true,
 		}));
 
+	// currently rebuilds everything when a single file is changed
 	gulp.watch(sourceDir + '/**/*')
 		.on('change', function () {
 			gulp.start('build');
 		});
 });
 
-function gitAddCommit(message, cb) {
-	gulp.src('./**/*')
-		.pipe(plugins.excludeGitignore())
-		.pipe(plugins.git.add({args: '-A'}))
-		.pipe(plugins.git.commit(message));
-	if (cb) cb();
-}
-
-function gitPush(remote, branch, cb) {
-	plugins.git.push('origin', 'master', function (err) {
-		if (err) throw err;
-		cb();
-	});
-}
-
-gulp.task('deploy:source', gulp.series(gitAddCommit.bind(null, 'Update ' + new Date().toISOString()), gitPush.bind(null, 'origin', 'master')));
-
-gulp.task('deploy:ghpages', function (cb) {
-	gulp.src(buildDir + '/**/*')
+// deploy to GitHub pages
+gulp.task('deploy', gulp.series('build', function () {
+	return gulp.src(buildDir + '/**/*')
 		.pipe(plugins.ghPages());
-	if (cb) cb();
-});
-
-gulp.task('deploy', gulp.parallel('deploy:source', 'deploy:ghpages'));
-
-gulp.task('default', gulp.series('build', function (cb) {
-	// webserver doesn't work without the timeout, for some reason.
-	setTimeout(function () {
-		gulp.start('webserver');
-	}, 3000);
-	cb();
 }));
+
+gulp.task('default', gulp.series('build', 'webserver'));
