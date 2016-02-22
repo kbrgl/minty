@@ -104,9 +104,10 @@ function gitAddCommit(message, cb) {
 	if (cb) cb();
 }
 
-function gitPush(remote, branch) {
+function gitPush(remote, branch, cb) {
 	plugins.git.push('origin', 'master', function (err) {
 		if (err) throw err;
+		cb();
 	});
 }
 
@@ -118,7 +119,7 @@ gulp.task('deploy:ghpages', function (cb) {
 	if (cb) cb();
 });
 
-gulp.task('deploy', gulp.series('deploy:source', 'deploy:ghpages'));
+gulp.task('deploy', gulp.parallel('deploy:source', 'deploy:ghpages'));
 
 gulp.task('default', gulp.series('build', function (cb) {
 	// webserver doesn't work without the timeout, for some reason.
