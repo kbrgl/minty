@@ -223,6 +223,7 @@ button .material-icons {
 
       &:hover {
         color: transparentize($card-action-link-color, .4);
+        pointer: cursor;
       }
     }
   }
