@@ -24,7 +24,7 @@ gulp.task('build:js', function () {
 	});
 
 	return gulp.src(sourceDir + '/**/*.js')
-		.pipe(plugins.xo())
+		//.pipe(plugins.xo())
 		.pipe(browserified)
 		.pipe(plugins.uglify())
 		.pipe(plugins.concat('/scripts/main.js'))
@@ -89,7 +89,7 @@ gulp.task('webserver', function() {
 	// currently rebuilds everything when a single file is changed
 	gulp.watch(sourceDir + '/**/*')
 		.on('change', function () {
-			gulp.start('build');
+			gulp.series('build');
 		});
 });
 

@@ -1,7 +1,7 @@
+'use strict';
 var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 
 (function ($) {
-	'use strict';
 	$(function () {
 		var defaults = {
 			workTime: 25 * 1000 * 60,
@@ -28,6 +28,31 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 			$('meta[name="theme-color"]').attr('content', background);
 		};
 
+		var playSound = function () {
+			var audio = new Audio('./assets/audio/nt.mp3');
+			audio.play();
+		};
+
+		var notify = function (text) {
+			if (!('Notification' in window)) {
+				return;
+			}
+
+			else if (Notification.permission === 'granted') {
+				// If it's okay let's create a notification
+				new Notification(text);
+			}
+
+			else if (Notification.permission !== 'denied') {
+				Notification.requestPermission(function (permission) {
+					// If the user accepts, let's create a notification
+					if (permission === 'granted') {
+						var notification = new Notification(text);
+					}
+				});
+			}
+		};
+
 		var colors = {
 			workBgColor: '#303030',
 			breakBgColor: '#2fe7ad',
@@ -36,14 +61,7 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 		};
 
 		var options = {
-			render: function (time) {
-				if (time || time === 0) {
-					time = Math.ceil(time / 1000);
-					time = Math.trunc(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60;
-					$('#clock').html(time);
-				}
-			},
-			stateChange: function (state) {
+			render: function (state, time) {
 				if (state === 0) {
 					$('#type').html('work');
 					changeColors(colors.workBgColor);
@@ -53,6 +71,12 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 				} else if (state === 2) {
 					$('#type').html('extended break');
 					changeColors(colors.breakBgColor);
+				}
+
+				if (time || time === 0) {
+					time = Math.ceil(time / 1000);
+					time = Math.trunc(time / 60) + ':' + (time % 60 < 10 ? '0' : '') + time % 60;
+					$('#clock').html(time);
 				}
 			},
 			workTime: localStorage.getItem('workTime'),
