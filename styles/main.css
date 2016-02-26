@@ -783,7 +783,8 @@ button .material-icons {
       text-transform: uppercase;
       transition: color .3s ease; }
       .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
-        color: rgba(255, 171, 64, 0.6); }
+        color: rgba(255, 171, 64, 0.6);
+        pointer: cursor; }
 
 .switch-icon label {
   cursor: pointer;

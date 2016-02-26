@@ -9,7 +9,6 @@ function PomodoroTimer(options) {
 	options.extendedBreakTime = options.extendedBreakTime || 30 * 60 * 1000;
 	options.extendedBreakCycles = options.extendedBreakCycles || 4;
 	options.render = options.render || function () {};
-	options.stateChange = options.stateChange || function () {};
 	options.delay = options.delay || 1;
 
 	// used internally
@@ -20,10 +19,10 @@ function PomodoroTimer(options) {
 	// options passed to created timer objects
 	var timerOptions =
 		{
-			render: options.render,
+			render: options.render.bind(this, state, false),
 			callback: function () {
 				nextTimer();
-				options.stateChange(state);
+				options.render(state, false);
 				start();
 			},
 			delay: options.delay
@@ -50,7 +49,7 @@ function PomodoroTimer(options) {
 
 	function start() {
 		timer.start();
-		options.stateChange(state);
+		options.render(state, true);
 	}
 
 	function pause() {
@@ -77,7 +76,6 @@ function PomodoroTimer(options) {
 		options.extendedBreakTime = newOptions.extendedBreakTime || 30 * 60 * 1000;
 		options.extendedBreakCycles = newOptions.extendedBreakCycles || 4;
 		options.render = newOptions.render || function () {};
-		options.stateChange = newOptions.stateChange || function () {};
 		options.delay = newOptions.delay || 1;
 		if (state === 0) {
 			timer.time = options.workTime;
