@@ -24,7 +24,6 @@ gulp.task('build:js', function () {
 	});
 
 	return gulp.src(sourceDir + '/**/*.js')
-		//.pipe(plugins.xo())
 		.pipe(browserified)
 		.pipe(plugins.uglify())
 		.pipe(plugins.concat('/scripts/main.js'))
@@ -45,7 +44,6 @@ gulp.task('build:css', function () {
 
 gulp.task('build:scss', function () {
 	return gulp.src(sourceDir + '/**/*.scss')
-		.pipe(plugins.scssLint())
 		.pipe(plugins.sass())
 		.pipe(gulp.dest(buildDir));
 });
@@ -91,6 +89,11 @@ gulp.task('webserver', function() {
 		.on('change', function () {
 			gulp.series('build');
 		});
+});
+
+gulp.task('lint', function () {
+	gulp.src(sourceDir + '/**/*.scss')
+		.pipe(plugins.scssLint);
 });
 
 // deploy to GitHub pages

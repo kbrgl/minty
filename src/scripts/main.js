@@ -33,21 +33,23 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 			audio.play();
 		};
 
-		var notify = function (text) {
+		var notify = function (text, options) {
 			if (!('Notification' in window)) {
 				return;
 			}
 
 			else if (Notification.permission === 'granted') {
 				// If it's okay let's create a notification
-				new Notification(text);
+				var n = new Notification(text, options);
+				setTimeout(n.close.bind(n), 4000);
 			}
 
 			else if (Notification.permission !== 'denied') {
 				Notification.requestPermission(function (permission) {
 					// If the user accepts, let's create a notification
 					if (permission === 'granted') {
-						var notification = new Notification(text);
+						var n = new Notification(text, options);
+						setTimeout(n.close.bind(n), 4000);
 					}
 				});
 			}
@@ -61,16 +63,25 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 		};
 
 		var options = {
-			render: function (state, time) {
-				if (state === 0) {
-					$('#type').html('work');
-					changeColors(colors.workBgColor);
-				} else if (state === 1) {
-					$('#type').html('break');
-					changeColors(colors.breakBgColor);
-				} else if (state === 2) {
-					$('#type').html('extended break');
-					changeColors(colors.breakBgColor);
+			render: function (state, init, time) {
+				if (state || state === 0) {
+					if (state === 0) {
+						$('#type').html('work');
+						changeColors(colors.workBgColor);
+					} else if (state === 1) {
+						$('#type').html('break');
+						changeColors(colors.breakBgColor);
+					} else if (state === 2) {
+						$('#type').html('extended break');
+						changeColors(colors.breakBgColor);
+					}
+					if (!init) {
+						playSound();
+						notify('minty', {
+							body: 'Your pomodoro has ended!',
+							icon: './assets/images/favicon.png'
+						});
+					}
 				}
 
 				if (time || time === 0) {

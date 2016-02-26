@@ -19,10 +19,10 @@ function PomodoroTimer(options) {
 	// options passed to created timer objects
 	var timerOptions =
 		{
-			render: options.render.bind(this, state),
+			render: options.render.bind(this, state, false),
 			callback: function () {
 				nextTimer();
-				options.render(state);
+				options.render(state, false);
 				start();
 			},
 			delay: options.delay
@@ -49,7 +49,7 @@ function PomodoroTimer(options) {
 
 	function start() {
 		timer.start();
-		options.render(state);
+		options.render(state, true);
 	}
 
 	function pause() {
