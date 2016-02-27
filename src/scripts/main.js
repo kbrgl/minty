@@ -34,33 +34,15 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 		};
 
 		var notify = function (text, options) {
-			// TODO: use ServiceWorkerRegistration.showNotification instead of Notification()
-			return undefined;
-			/*if (!('Notification' in window)) {
-				console.warn('Notifications are not supported by your browser');
-			}
+			navigator.serviceWorker.register('./scripts/sw.js');
 
-			else if (Notification.permission === 'granted') {
-				// If it's okay let's create a notification
-				var n = new Notification(text, options);
-				n.onerror = function () {
-					n.close();
-				};
-				setTimeout(n.close.bind(n), 4000);
-			}
-
-			else if (Notification.permission !== 'denied') {
-				Notification.requestPermission(function (permission) {
-					// If the user accepts, let's create a notification
-					if (permission === 'granted') {
-						var n = new Notification(text, options);
-						n.onerror = function () {
-							n.close();
-						};
-						setTimeout(n.close.bind(n), 4000);
-					}
-				});
-			}*/
+			Notification.requestPermission(function(result) {
+				if (result === 'granted') {
+					navigator.serviceWorker.ready.then(function(registration) {
+						registration.showNotification(text, options);
+					});
+				}
+			});
 		};
 
 		var colors = {
@@ -85,12 +67,12 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 					}
 					if (!init) {
 						playSound();
-						/*notify('minty', {
+						notify('minty', {
 							body: 'Your pomodoro has ended!',
 							icon: './assets/images/favicon.png',
 							tag: 'statechanged',
-							lang: 'en-US'
-						});*/
+							vibrate: [200, 100, 200, 100, 200, 100, 200]
+						});
 					}
 				}
 

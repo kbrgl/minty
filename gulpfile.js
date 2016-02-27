@@ -78,17 +78,13 @@ gulp.task('webserver', function() {
 	gulp.src(buildDir)
 		.pipe(plugins.webserver({
 			path: '/',
-			fallback: 'index.html',
 			livereload: true,
 			host: '0.0.0.0',
 			open: true,
 		}));
 
 	// currently rebuilds everything when a single file is changed
-	gulp.watch(sourceDir + '/**/*')
-		.on('change', function () {
-			gulp.series('build');
-		});
+	gulp.watch(sourceDir, gulp.series('build'));
 });
 
 gulp.task('lint', function () {

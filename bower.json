@@ -22,7 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^2.2.0",
-    "notify": "^0.0.1"
+    "jquery": "^2.2.0"
   }
 }
