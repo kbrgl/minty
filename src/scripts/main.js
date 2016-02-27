@@ -33,18 +33,6 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 			audio.play();
 		};
 
-		var notify = function (text, options) {
-			navigator.serviceWorker.register('./scripts/sw.js');
-
-			Notification.requestPermission(function(result) {
-				if (result === 'granted') {
-					navigator.serviceWorker.ready.then(function(registration) {
-						registration.showNotification(text, options);
-					});
-				}
-			});
-		};
-
 		var colors = {
 			workBgColor: '#303030',
 			breakBgColor: '#2fe7ad',
@@ -67,12 +55,6 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 					}
 					if (!init) {
 						playSound();
-						notify('minty', {
-							body: 'Your pomodoro has ended!',
-							icon: './assets/images/favicon.png',
-							tag: 'statechanged',
-							vibrate: [200, 100, 200, 100, 200, 100, 200]
-						});
 					}
 				}
 
