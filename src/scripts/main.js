@@ -17,7 +17,7 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 			localStorage.setItem('breakTime', defaults.breakTime);
 		}
 		if (!localStorage.getItem('longerBreakTime')) {
-			localStorage.setItem('longerBreakTime', defaults.extendedbreakTime);
+			localStorage.setItem('longerBreakTime', defaults.extendedBreakTime);
 		}
 		if (!localStorage.getItem('longerBreakRequiredCycles')) {
 			localStorage.setItem('longerBreakRequiredCycles', defaults.extendedBreakCycles);
