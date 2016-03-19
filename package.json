@@ -20,6 +20,9 @@
     "url": "https://github.com/kbrgl/minty/issues"
   },
   "homepage": "https://github.com/kbrgl/minty#readme",
+  "dependencies": {
+    "browserify"
+  },
   "devDependencies": {
     "del": "^2.2.0",
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
