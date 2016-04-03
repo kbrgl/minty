@@ -141,5 +141,17 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 			$('input[name="longerBreakTime"]').val(defaults.extendedBreakTime / 1000 / 60);
 			$('input[name="longerBreakRequiredCycles"]').val(defaults.extendedBreakCycles);
 		};
+
+		$(document).bind('keydown', 'space', function () {
+			if ($('#start-timer').css('display') === 'none') {
+				if ($('#pause-timer').css('display') === 'none') {
+					window.resumeTimer();
+				} else {
+					window.pauseTimer();
+				}
+			} else {
+				window.startTimer();
+			}
+		});
 	});
 })(jQuery);
