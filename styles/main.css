@@ -665,8 +665,8 @@ input {
   font-family: "Roboto Mono"; }
 
 .container {
-  margin-bottom: 2rem;
-  margin-top: 30vmin; }
+  margin-top: 30vmin;
+  margin-bottom: 2rem; }
 
 .main {
   margin-bottom: 5rem; }
@@ -748,7 +748,6 @@ button .material-icons {
 
 .card {
   background-color: #fff;
-  border-radius: 3px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   color: #424242;
   margin: 0 0 4rem;
@@ -786,6 +785,16 @@ button .material-icons {
         color: rgba(255, 171, 64, 0.6);
         pointer: cursor; }
 
+.card#options {
+  position: fixed;
+  z-index: 69;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: 0;
+  max-height: 35vh;
+  overflow: auto; }
+
 .switch-icon label {
   cursor: pointer;
   display: inline-block;
@@ -804,3 +813,7 @@ button .material-icons {
         color: inherit; }
     .switch-icon label input[type=checkbox]:not(:checked) ~ .material-icons.inverted::before {
       color: #29a69a; }
+
+@media screen and (max-width: 600px) {
+  footer {
+    display: none; } }
