@@ -128,7 +128,7 @@ var PomodoroTimer = require('./PomodoroTimer').PomodoroTimer;
 
 			// flash screen to indicate that changes have been saved.
 			var initial = $('body').css('background-color');
-			$('#options').hide(200);
+            toggleOptions();
 			$('body').css('background-color', colors.flashColor);
 			setTimeout(function () {
 				$('body').css('background-color', initial);

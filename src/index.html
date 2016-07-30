@@ -1,3 +1,7 @@
+<!--
+    Hosted on Github (https://github.com/kbrgl/minty).
+    This source code may be minified or preprocessed, so I recommend looking at it on GitHub.
+-->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -66,25 +70,24 @@
 					</button>
 				</nav>
 			</div>
-
-			<div id="options" class="card">
-				<div class="card-content">
-					<span class="card-title">Configure Minty</span>
-					<ul>
-						<li><p>One pomodoro is <input type="number" name="workTime" min="1" value="25"/> minutes of work followed by a <input type="number" name="breakTime" min="1" value="5"/> minute break.</p></li>
-						<li><p>After every <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/> pomodoros, give an extended break for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p></li>
-	            	</ul>
-				</div>
-	            <div class="card-action">
-	                <a onclick="saveOptions()" style="cursor:pointer;">Save changes</a>
-	                <a onclick="defaultifyOptions()" style="float:right;cursor:pointer;"><i class="material-icons">settings_backup_restore</i></a>
-	            </div>
-	        </div>
-
-			<footer>
-				<p>minty: a simple <a href="//en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank"> pomodoro timer</a></p>
-				<p class="reduced-opacity">(c) 2016 Kabir Goel. Hosted on <a href="//github.com/kbrgl/minty" target="_blank">GitHub</a>.</p>
-			</footer>
+            <footer>
+                <p>minty: a simple <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank">pomodoro timer</a></p>
+                <p class="reduced-opacity">(c) 2016 Kabir Goel. Hosted on <a href="https://github.com/kbrgl/minty" target="_blank">GitHub</a>.</p>
+            </footer>
 		</div>
+
+        <div id="options" class="card">
+            <div class="card-content">
+                <span class="card-title">Configure Minty</span><a onclick="toggleOptions()" style="cursor:pointer;float:right;color:rgb(66,66,66);"><i class="material-icons">cancel</i></a>
+                <ul>
+                    <li><p>One pomodoro is <input type="number" name="workTime" min="1" value="25"/> minutes of work followed by a <input type="number" name="breakTime" min="1" value="5"/> minute break.</p></li>
+                    <li><p>After every <input type="number" name="longerBreakRequiredCycles" min="1" value="4"/> pomodoros, give an extended break for <input type="number" name="longerBreakTime" min="1" value="20"/> minutes.</p></li>
+                </ul>
+            </div>
+            <div class="card-action">
+                <a onclick="saveOptions()" style="cursor:pointer;">Save changes</a>
+                <a onclick="defaultifyOptions()" style="float:right;cursor:pointer;"><i class="material-icons">settings_backup_restore</i></a>
+            </div>
+        </div>
 	</body>
 </html>
